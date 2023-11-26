@@ -8,7 +8,7 @@ export const startConnectionMongoDB = async () => {
     console.log("Conectado a la base de datos...");
     await mongoose.connect(mongo_uri);
 
-    console.log(`Base de datos conectada`);
+    console.log(`Se estableció correctamente la conexión a la Base de datos`);
   } catch (error) {
     console.error("No se pudo establecer la conexión a la base de datos", error);
   }
