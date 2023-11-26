@@ -11,6 +11,7 @@ const { port } = configDotEnv();
 
 /*- - - - - - - - - - - - Imports de Rutas - - - - - - - - - - - -*/
 import { authRouter } from "./src/routes/auth.routes.js";
+import { postRouter } from "./src/routes/post.routes.js";
 /*- - - - - - - - - - - - - - - APP - - - - - - - - - - - - - - -*/
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 
 /*- - - - - - - - - - - - - - - Rutas - - - - - - - - - - - - - - - -*/
 app.use("/api/auth", authRouter);
+app.use("/api/post", postRouter);
 
 /*- - - - - - - - Inicia el servidor y Conexión a la base de datos MongoDB - - - - - - - -*/
 

@@ -9,7 +9,7 @@ const authRouter = Router();
 authRouter.post("/register", [avatarValidation, emailValidation, passwordValidation, usernameValidation], signUp);
 authRouter.post("/login", signIn);
 authRouter.post("/logout", logout);
-authRouter.post("/change-password", [newPasswordValidation], changePassword);
+authRouter.put("/change-password", [newPasswordValidation], changePassword);
 authRouter.get("/profile", [validateAccessToken], getUserById);
 
 export { authRouter };
