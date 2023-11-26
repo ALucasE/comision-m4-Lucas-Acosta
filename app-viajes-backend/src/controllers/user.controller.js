@@ -113,9 +113,7 @@ export const changePassword = async (req, res) => {
 
 /*                     VER DATOS DEL USUARIO              */
 export const getUserById = async (req, res) => {
-  //Se borran los datos de los cookies
   try {
-    // const { userId } = req.params;
     const usuario = await UserModel.findById(req.userId);
 
     if (!usuario) {
