@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import * as bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 const UserSchema = new Schema(
   {
@@ -10,12 +10,12 @@ const UserSchema = new Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
+      // unique: true,
     },
     username: {
       type: String,
       required: true,
-      unique: true,
+      // unique: true,
     },
     password: {
       type: String,
@@ -37,12 +37,21 @@ const UserSchema = new Schema(
 //   next();
 // });
 
-//npm i bcryptjs - https://www.npmjs.com/package/bcryptj
+// Middleware para encriptar la contraseña antes de guardar el usuario
+// UserSchema.pre("save", async function (next) {
+//   if (this.isModified("password")) {
+//     this.password = await this.constructor.encryptPassword(this.password);
+//   }
+//   next();
+// });
+
+// Función para encriptar la contraseña antes de guardar el usuario
 UserSchema.statics.encryptPassword = async (password) => {
   const salt = bcrypt.genSaltSync(); //Crea el salt(las vueltas que encripta)
   return await bcrypt.hashSync(password, salt); //Devuelve el password encriptado
 };
-//Comparación del password recibido con el encriptado
+
+// Función para comparar la contraseña ingresada con la almacenada en la base de datos
 UserSchema.statics.comparePassword = async (password, receivedPassword) => {
   return await bcrypt.compare(password, receivedPassword);
 };
