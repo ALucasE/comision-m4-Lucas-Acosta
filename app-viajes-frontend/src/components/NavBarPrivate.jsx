@@ -31,15 +31,9 @@ export const NavBarPrivate = () => {
           <div className="collapse navbar-collapse ms-3" id="navbarColor01">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                <NavLink
-                  className={({ isActive }) => {
-                    return isActive ? "nav-link" : "nav-link active";
-                  }}
-                  to="/home"
-                >
+                <Link className="nav-link" to="/home">
                   Home
-                  <span className="visually-hidden">(current)</span>
-                </NavLink>
+                </Link>
               </li>
               {/* <li className="nav-item">
                 <NavLink
@@ -66,13 +60,13 @@ export const NavBarPrivate = () => {
                   Acciones
                 </a>
                 <div className="dropdown-menu">
-                  <Link className="dropdown-item" to="/">
+                  <Link className="dropdown-item" to="/post/new">
                     Crear publicación
                   </Link>
-                  <Link className="dropdown-item" to="/">
+                  <Link className="dropdown-item" to="/post">
                     Ver mis publicación
                   </Link>
-                  <Link className="dropdown-item" to="/post">
+                  <Link className="dropdown-item" to="/">
                     Something else here
                   </Link>
                   <div className="dropdown-divider" />

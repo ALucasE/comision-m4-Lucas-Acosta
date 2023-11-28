@@ -7,8 +7,8 @@ import { validateAccessToken } from "../utils/jwt.validate.js";
 const postRouter = Router();
 
 postRouter.get("/", getAllPost);
-postRouter.post("/author", [validateAccessToken], getPostByAuthor);
-postRouter.post("/getPostId/:postId", [validateAccessToken], getPostById);
+postRouter.get("/author", [validateAccessToken], getPostByAuthor);
+postRouter.get("/getPostId/:postId", [validateAccessToken], getPostById);
 postRouter.post("/create", [validateAccessToken, descriptionValidation, imageValidation, titleValidation], createPost);
 postRouter.put("/:postId", [validateAccessToken, descriptionValidation, imageValidation, titleValidation], updatePost);
 postRouter.delete("/:postId", [validateAccessToken], deletePost);

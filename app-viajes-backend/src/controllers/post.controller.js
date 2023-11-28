@@ -30,7 +30,8 @@ export const getPostById = async (req, res) => {
 /*BUSCAR UN POST POR AUTOR/USUARIO ##########################################################################*/
 export const getPostByAuthor = async (req, res) => {
   try {
-    // const autor = req.userId;
+    //const autor = req.userId;
+    console.log("req.userId", req.userId);
     const publicaciones = await PostModel.find({ author: req.userId }).populate("author", ["username", "avatar"]);
     console.log("publicaciones: ", publicaciones);
 

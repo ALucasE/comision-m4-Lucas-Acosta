@@ -10,6 +10,8 @@ import HomePrivate from "./pages/HomePrivate";
 import PostPrivate from "./pages/PostPrivate";
 import { PublicRoutes } from "./routes/PublicRoutes";
 import { CardViewPost } from "./components/CardViewPost";
+import { Pruebas } from "./pages/Pruebas";
+import PostCreate from "./pages/PostCreate";
 
 function AppRouter() {
   return (
@@ -18,6 +20,7 @@ function AppRouter() {
         <Routes>
           <Route element={<PublicRoutes />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/pruebas" element={<Pruebas />} />
 
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -27,6 +30,7 @@ function AppRouter() {
             <Route path="/home" element={<HomePrivate />} />
             <Route path="/post" element={<PostPrivate />} />
             <Route path="/post/:id" element={<CardViewPost />} />
+            <Route path="/post/new" element={<PostCreate />} />
           </Route>
           <Route path="*" element={<NoFound404Page />} />
         </Routes>
