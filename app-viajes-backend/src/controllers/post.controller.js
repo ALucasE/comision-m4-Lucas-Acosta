@@ -20,7 +20,7 @@ export const getPostById = async (req, res) => {
     const { postId } = req.params;
     const publicacion = await PostModel.findById(postId).populate("author", ["username", "avatar"]);
     if (publicacion.length < 1) return res.sendStatus(404);
-    res.status(200).json({ publicacion });
+    res.status(200).json(publicacion);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error al cargar la publicación por ID" });
