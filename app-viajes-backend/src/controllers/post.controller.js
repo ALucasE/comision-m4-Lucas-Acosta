@@ -18,7 +18,7 @@ export const getAllPost = async (req, res) => {
 export const getPostById = async (req, res) => {
   try {
     const { postId } = req.params;
-    const publicacion = await PostModel.findById(postId).populate("author", ["username", "avatar"]);
+    const publicacion = await PostModel.findById(postId).populate("author", ["username", "avatar", "email"]).populate("comments");
     if (publicacion.length < 1) return res.sendStatus(404);
     res.status(200).json(publicacion);
   } catch (error) {
@@ -30,12 +30,10 @@ export const getPostById = async (req, res) => {
 /*BUSCAR UN POST POR AUTOR/USUARIO ##########################################################################*/
 export const getPostByAuthor = async (req, res) => {
   try {
-    // const autor = req.userId;
-    const publicaciones = await PostModel.find({ author: req.userId }).populate("author", ["username", "avatar"]);
-    console.log("publicaciones: ", publicaciones);
-
+    //const autor = req.userId;
+    const publicaciones = await PostModel.find({ author: req.userId }).populate("author", ["username", "avatar", "email"]);
     if (publicaciones.length < 1) return res.sendStatus(404);
-    console.log("autor: ", req.userId);
+
     res.status(200).json(publicaciones);
   } catch (error) {
     console.log(error);

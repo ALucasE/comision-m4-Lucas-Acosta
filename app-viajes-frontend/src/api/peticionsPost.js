@@ -6,10 +6,10 @@ ENDPOINTS API
 
 MÉTODO GET
 /post/                      =>      getAllPost
-
-MÉTODO POST
 /post/author                =>      getPostByAuthor
 /post/getPostId/:postId     =>      getPostById
+
+MÉTODO POST
 /post/create                =>      createPost
 
 MÉTODO PUT
@@ -21,4 +21,37 @@ MÉTODO DELETE
 
 export const getAllpost = () => axios.get(`${API_URL}post`);
 
-export const getPostById = (data, postId) => axios.post(`${API_URL}post/getPostId/${postId}`, data);
+export const getPostByAuthor = (token) =>
+  axios.get(`${API_URL}post/author/`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+
+export const getPostById = (token, postId) =>
+  axios.get(`${API_URL}post/getPostId/${postId}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+
+export const createPost = (token, data) =>
+  axios.post(`${API_URL}post/create/`, data, {
+    headers: {
+      Authorization: token,
+    },
+  });
+
+export const updatePost = (token, data, postId) =>
+  axios.put(`${API_URL}post/${postId}`, data, {
+    headers: {
+      Authorization: token,
+    },
+  });
+
+export const deletePost = (token, postId) =>
+  axios.delete(`${API_URL}post/${postId}`, {
+    headers: {
+      Authorization: token,
+    },
+  });

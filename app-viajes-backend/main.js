@@ -32,7 +32,7 @@ app.use(cookieParser());
 /*- - - - - - - - - - - - - - - Rutas - - - - - - - - - - - - - - - -*/
 app.use("/api/auth", authRouter);
 app.use("/api/post", postRouter);
-app.use("/api/comment", commentRouter);
+app.use("/api/comments", commentRouter);
 
 /*- - - - - - - - Inicia el servidor y Conexión a la base de datos MongoDB - - - - - - - -*/
 
