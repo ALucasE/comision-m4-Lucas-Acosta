@@ -26,6 +26,7 @@ dist-ssr
 
 # FRONTEND
 app-viajes-frontend/node_modules/
+app-viajes-frontend/dist/
 # BACKEND
 app-viajes-backend/node_modules/
 app-viajes-backend/.env
