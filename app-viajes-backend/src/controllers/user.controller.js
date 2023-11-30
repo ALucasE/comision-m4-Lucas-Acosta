@@ -1,7 +1,7 @@
 import { UserModel } from "../models/user.model.js";
 import { validationResult } from "express-validator";
 import { createAccessToken } from "../utils/jwt.create.js";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 //import { configDotEnv } from "../config/dotenv.config.js";
 //const { jwt_secret } = configDotEnv();
 
@@ -64,12 +64,14 @@ export const signIn = async (req, res) => {
     }
     // Genera el Token
     const token = await createAccessToken({ id: usuario._id });
-    res.status(201).cookie("token", token).json({
-      msg: "Usuario registrado exitosamente.",
+    const user = {
+      avatar: usuario.avatar,
       id: usuario._id,
       username: usuario.username,
       email: usuario.email,
-    });
+    };
+    // res.status(200).cookie("token", token).json({ token, user });
+    res.status(200).json({ token, user });
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
     res.status(500).json({ message: "Error al iniciar sesión" });
@@ -113,9 +115,7 @@ export const changePassword = async (req, res) => {
 
 /*                     VER DATOS DEL USUARIO              */
 export const getUserById = async (req, res) => {
-  //Se borran los datos de los cookies
   try {
-    // const { userId } = req.params;
     const usuario = await UserModel.findById(req.userId);
 
     if (!usuario) {
