@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_URL } from "./constantes";
 //"http://localhost:3000/api/";
 
-const URL_COMMENT = `${API_URL}comment/`;
+const URL_COMMENT = `${API_URL}comments/`;
 //http://localhost:3000/api/comment/
 
 /*
@@ -22,38 +22,37 @@ MÉTODO PUT
 MÉTODO DELETE
 /:commentId                 =>      deletePost                  http://localhost:3000/api/comment/:commentId
 
-
-
-
-commentRouter.put("/:commentId", [validateAccessToken, descriptionValidation], updateComment);
-commentRouter.delete("/:commentId", [validateAccessToken, descriptionValidation], deleteComment);
 */
-const token = localStorage.getItem("token");
+//const token = localStorage.getItem("token");
 
-export const getCommentsByPostId = (postId) =>
+export const getCommentsByPostId = (token, postId) =>
   axios.get(`${URL_COMMENT}${postId}`, {
     headers: {
       Authorization: token,
+      "Content-Type": "application/json",
     },
   });
 
-export const createComment = (data) =>
+export const createComment = (token, data) =>
   axios.post(`${URL_COMMENT}`, data, {
     headers: {
       Authorization: token,
+      "Content-Type": "application/json",
     },
   });
 
-export const updatePost = (data, commentId) =>
+export const updatePost = (token, data, commentId) =>
   axios.put(`${URL_COMMENT}${commentId}`, data, {
     headers: {
       Authorization: token,
+      "Content-Type": "application/json",
     },
   });
 
-export const deletePost = (commentId) =>
+export const deletePost = (token, commentId) =>
   axios.delete(`${URL_COMMENT}${commentId}`, {
     headers: {
       Authorization: token,
+      "Content-Type": "application/json",
     },
   });

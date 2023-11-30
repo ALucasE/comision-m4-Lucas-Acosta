@@ -9,7 +9,7 @@ export const CardViewPostsPrivate = () => {
   const { jwt, auth } = useAuth();
   const navigate = useNavigate();
 
-  const obtenerPost = async () => {
+  const obtenerPostByAuthor = async () => {
     try {
       const res = await getPostByAuthor(jwt);
       setPosts(res.data);
@@ -19,7 +19,7 @@ export const CardViewPostsPrivate = () => {
   };
 
   useEffect(() => {
-    obtenerPost();
+    obtenerPostByAuthor();
   }, []);
 
   //########### validacion boton VER ############
