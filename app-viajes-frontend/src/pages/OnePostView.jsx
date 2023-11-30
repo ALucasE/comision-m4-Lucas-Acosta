@@ -6,13 +6,14 @@ import { getPostById } from "../api/peticionsPost";
 import { CardViewPost } from "../components/CardViewPost";
 // import { getCommentsByPostId } from "../api/peticionsComment";
 import { TableComments } from "../components/TableComments";
+import { CardBody } from "../components/Card";
 
 const OnePostView = () => {
   const { jwt } = useAuth();
   const { id } = useParams();
   const { setPostContext, obtenerComentariosPorIdPost, agregarUnComentario } = usePostContext();
   const ref = useRef(null);
-  const [comentario, setComentario] = useState([]);
+  const [comentarios, setComentarios] = useState([]);
 
   const obtenerPost = async () => {
     try {
@@ -22,8 +23,8 @@ const OnePostView = () => {
       console.error("Error: ", error);
     }
   };
-  const refresh = () => {
-    setComentario(obtenerComentariosPorIdPost(id));
+  const refresh = async () => {
+    setComentarios(await obtenerComentariosPorIdPost(id));
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,30 +44,30 @@ const OnePostView = () => {
 
   useEffect(() => {
     obtenerComentariosPorIdPost(id);
-  }, [comentario]);
+  }, [comentarios]);
   useEffect(() => {
     obtenerPost();
   }, []);
 
   return (
     <>
-      <div>
-        <CardViewPost />
-      </div>
-      <div className="d-grid gap-2 mt-3">
-        <form onSubmit={handleSubmit} ref={ref}>
-          <div className="form-floating">
-            <input type="text" name="description" className="form-control" id="description" placeholder="name@example.com" />
-            <label htmlFor="description">Comentario</label>
-            <button className="btn btn-lg btn-primary my-1" type="submit" onClick={refresh}>
-              Hacer un comentario nuevo
-            </button>
-          </div>
-        </form>
-      </div>
-      <div>
-        <TableComments />
-      </div>
+      <CardViewPost />
+
+      <CardBody>
+        <div className="d-grid gap-2 mt-3">
+          <form onSubmit={handleSubmit} ref={ref}>
+            <div className="form-floating">
+              <input type="text" name="description" className="form-control" id="description" placeholder="name@example.com" />
+              <label htmlFor="description">Comentario</label>
+              <button className="btn btn-lg btn-primary my-2" type="submit" onClick={refresh}>
+                Enviar comentario
+              </button>
+            </div>
+          </form>
+        </div>
+      </CardBody>
+
+      <TableComments />
     </>
   );
 };

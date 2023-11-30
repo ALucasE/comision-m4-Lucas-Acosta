@@ -3,7 +3,6 @@ import { usePostContext } from "../context/PostContext";
 
 export const TableComments = () => {
   const { currentComments } = usePostContext();
-  console.log(currentComments);
   if (currentComments === null) {
     return (
       <CardBody>
