@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePostContext } from "../context/PostContext";
-import { getPostById } from "../api/peticionsPost";
+import { deletePost, getPostById } from "../api/peticionsPost";
 import { CardViewPost } from "../components/CardViewPost";
 // import { getCommentsByPostId } from "../api/peticionsComment";
 import { TableComments } from "../components/TableComments";
@@ -14,6 +14,7 @@ const OnePostView = () => {
   const { setPostContext, obtenerComentariosPorIdPost, agregarUnComentario } = usePostContext();
   const ref = useRef(null);
   const [comentarios, setComentarios] = useState([]);
+  const go = useNavigate();
 
   const obtenerPost = async () => {
     try {
@@ -23,6 +24,13 @@ const OnePostView = () => {
       console.error("Error: ", error);
     }
   };
+
+  const elimiarPost = async () => {
+    deletePost(jwt, id);
+    refresh();
+    go("/post");
+  };
+
   const refresh = async () => {
     setComentarios(await obtenerComentariosPorIdPost(id));
   };
@@ -51,13 +59,13 @@ const OnePostView = () => {
 
   return (
     <>
-      <CardViewPost />
+      <CardViewPost elimiarPost={elimiarPost} />
 
       <CardBody>
         <div className="d-grid gap-2 mt-3">
           <form onSubmit={handleSubmit} ref={ref}>
             <div className="form-floating">
-              <input type="text" name="description" className="form-control" id="description" placeholder="name@example.com" />
+              <input type="text" name="description" className="form-control" id="description" placeholder="Aqui puede escribir un comentario" />
               <label htmlFor="description">Comentario</label>
               <button className="btn btn-lg btn-primary my-2" type="submit" onClick={refresh}>
                 Enviar comentario
@@ -67,7 +75,7 @@ const OnePostView = () => {
         </div>
       </CardBody>
 
-      <TableComments />
+      <TableComments postId={id} comentarios={comentarios} />
     </>
   );
 };

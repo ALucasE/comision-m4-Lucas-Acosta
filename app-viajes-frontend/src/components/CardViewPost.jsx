@@ -1,9 +1,13 @@
 import { CardBody } from "./Card";
 import { AuthorCard } from "./AuthorCard";
 import { usePostContext } from "../context/PostContext";
+import { BsPencil, BsTrash3 } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
-export const CardViewPost = () => {
+export const CardViewPost = ({ elimiarPost }) => {
   const { currentPost } = usePostContext();
+  // const autorId = currentPost?.author?._id;
+  const { id } = JSON.parse(localStorage.getItem("user"));
 
   return (
     <>
@@ -17,12 +21,20 @@ export const CardViewPost = () => {
               <div className="card-body">
                 <h5 className="card-title">{currentPost?.title}</h5>
                 <p className="card-text">{currentPost?.description}</p>
-                <p className="card-text">
+                <div className="card-text">
                   <AuthorCard />
-                </p>
+                </div>
                 <p className="card-text">
                   <small className="text-body-secondary">{currentPost?.createdAt}</small>
                 </p>
+              </div>
+              <div className="btn-group" hidden={currentPost?.author?._id === id ? false : true}>
+                <Link to={`/post/edit/${currentPost._id}`} type="button" className="btn btn-primary btn-sm">
+                  <BsPencil />
+                </Link>
+                <button type="button" className="btn btn-primary btn-sm" onClick={elimiarPost}>
+                  <BsTrash3 />
+                </button>
               </div>
             </div>
           </div>
@@ -33,3 +45,4 @@ export const CardViewPost = () => {
 };
 
 // style={{ maxWidth: 540 }}
+// autorId === id ? true : false

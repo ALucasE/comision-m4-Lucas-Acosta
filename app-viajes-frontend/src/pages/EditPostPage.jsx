@@ -1,17 +1,15 @@
 import { useRef } from "react";
-import { CardBody } from "./Card";
-import { useNavigate } from "react-router-dom";
-import { createPost } from "../api/peticionsPost";
-import { useAuth } from "../context/AuthContext";
+import { CardBody } from "../components/Card";
+import { Link, useNavigate } from "react-router-dom";
+import { usePostContext } from "../context/PostContext";
+import { updatePost } from "../api/peticionsPost";
 
-export const FormNewPost = () => {
+const EditPostPage = () => {
+  const { currentPost } = usePostContext();
   const ref = useRef(null);
+  let jwt = localStorage.getItem("token");
+  const go = useNavigate();
 
-  const { jwt } = useAuth();
-  const navigate = useNavigate();
-  const volver = () => {
-    navigate("/");
-  };
   //Toma los datos del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,12 +27,12 @@ export const FormNewPost = () => {
 
     //Envio de los datos al BackEnd
     try {
-      const res = await createPost(jwt, post);
-      if (res.status !== 201) {
-        console.log("NO 200: ", res.data);
+      const res = await updatePost(jwt, post);
+      if (res.status !== 202) {
+        console.log("NO 202: ", res.data);
         ref.current.reset();
       }
-      navigate("/home");
+      go("/post");
     } catch (error) {
       alert("Ocurrio un error ", error.response.data.message);
       console.log("Error: ", error);
@@ -43,6 +41,7 @@ export const FormNewPost = () => {
     //Limpia el formulario
     ref.current.reset();
   };
+
   return (
     <CardBody>
       <form onSubmit={handleSubmit} ref={ref}>
@@ -53,14 +52,14 @@ export const FormNewPost = () => {
             <label className="form-label mt-4" htmlFor="title">
               Titulo
             </label>
-            <input type="text" className="form-control" placeholder="Mi titulo" id="title" name="title" />
+            <input type="text" className="form-control" value={currentPost?.title} id="title" name="title" />
           </div>
 
           <div className="form-group">
             <label className="form-label mt-4" htmlFor="imageURL">
               URL de una imagen
             </label>
-            <input type="url" className="form-control" placeholder="http://www.mi-imagen.com" id="imageURL" name="imageURL" />
+            <input type="url" className="form-control" value={currentPost?.imageURL} id="imageURL" name="imageURL" />
           </div>
 
           <div className="form-group">
@@ -74,6 +73,7 @@ export const FormNewPost = () => {
               rows={4}
               spellCheck="false"
               data-ms-editor="true"
+              value={currentPost?.description}
               defaultValue={""}
             />
           </div>
@@ -82,12 +82,13 @@ export const FormNewPost = () => {
             <button className="btn btn-primary mt-2" type="submit">
               Enviar
             </button>
-            <button className="btn btn-secondary" type="button" onClick={volver}>
+            <Link to={`/post/${currentPost?._id}`} className="btn btn-secondary" type="button">
               Volver
-            </button>
+            </Link>
           </div>
         </fieldset>
       </form>
     </CardBody>
   );
 };
+export default EditPostPage;

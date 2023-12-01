@@ -1,14 +1,24 @@
-import { CardBody, CardTitle } from "./Card";
+import { CardBody } from "./Card";
+import { Cargando } from "./Cargando";
 import { usePostContext } from "../context/PostContext";
+import { SinComments } from "../components/SinComments";
+// import { useParams } from "react-router-dom";
+
+import { BsPencil, BsTrash3 } from "react-icons/bs";
 
 export const TableComments = () => {
-  const { currentComments } = usePostContext();
+  const { currentComments, eliminarUnComentario } = usePostContext();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const eliminarComentario = (commentId) => {
+    console.log("Eliminar comentario: ", commentId);
+    eliminarUnComentario(commentId);
+  };
+
   if (currentComments === null) {
-    return (
-      <CardBody>
-        <CardTitle>Aun no hay comentarios</CardTitle>
-      </CardBody>
-    );
+    return <SinComments />;
+  } else if (currentComments === undefined) {
+    return <Cargando />;
   } else {
     return (
       <>
@@ -22,6 +32,16 @@ export const TableComments = () => {
                   </th>
                   <td>@{item?.author?.username}</td>
                   <td colSpan={4}>{item?.description}</td>
+                  <td>
+                    <div className="btn-group" hidden={item.author._id === user.id ? false : true}>
+                      <button type="button" className="btn btn-primary btn-sm">
+                        <BsPencil />
+                      </button>
+                      <button type="button" className="btn btn-primary btn-sm" onClick={() => eliminarComentario(item._id)}>
+                        <BsTrash3 />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -31,3 +51,5 @@ export const TableComments = () => {
     );
   }
 };
+
+// hidden={item.author._id === id ? true : false}

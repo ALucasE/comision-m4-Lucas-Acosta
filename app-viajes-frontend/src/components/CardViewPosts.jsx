@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllpost } from "../api/peticionsPost";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { SinPost } from "./SinPost";
 
 export const CardViewPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -9,6 +10,9 @@ export const CardViewPosts = () => {
   const obtenerPost = async () => {
     try {
       const res = await getAllpost();
+      if (res.status !== 200) {
+        return <SinPost />;
+      }
       setPosts(res.data);
     } catch (error) {
       console.error("Error: ", error);

@@ -6,11 +6,14 @@ import { validationResult } from "express-validator";
 export const getAllPost = async (req, res) => {
   try {
     const publicaciones = await PostModel.find().populate("author", ["username", "avatar"]);
-    if (publicaciones.length < 1) return res.sendStatus(404);
+    if (publicaciones.length < 1) return res.sendStatus(204);
     res.status(200).json(publicaciones);
+    return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error al cargar las publicaciones" });
+    // res.status(500).json({ message: "Error al cargar las publicaciones" });
+    res.status(500).json({ message: error.message });
+    return;
   }
 };
 
@@ -19,11 +22,15 @@ export const getPostById = async (req, res) => {
   try {
     const { postId } = req.params;
     const publicacion = await PostModel.findById(postId).populate("author", ["username", "avatar", "email"]).populate("comments");
-    if (publicacion.length < 1) return res.sendStatus(404);
+    if (!publicacion) return res.sendStatus(204);
     res.status(200).json(publicacion);
+    return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error al cargar la publicación por ID" });
+    // res.status(500).json({ message: "Error al cargar la publicación por ID" });
+    // res.status(500).json({ message: error.message });
+    res.status(500);
+    return;
   }
 };
 
@@ -32,12 +39,14 @@ export const getPostByAuthor = async (req, res) => {
   try {
     //const autor = req.userId;
     const publicaciones = await PostModel.find({ author: req.userId }).populate("author", ["username", "avatar", "email"]);
-    if (publicaciones.length < 1) return res.sendStatus(404);
+    if (publicaciones.length < 1) return res.sendStatus(204);
 
     res.status(200).json(publicaciones);
+    return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error al cargar la publicaciones por autor" });
+    res.status(500).json({ message: error.message });
+    return;
   }
 };
 
@@ -61,7 +70,7 @@ export const createPost = async (req, res) => {
     //Se aguarda el nuevo usuario creado
     const nuevaPublicacion = await newPost.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       msg: "Publicación creada exitosamente.",
       author: author.username,
       authorId: author._id,
@@ -71,7 +80,8 @@ export const createPost = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "No se pudo crear la publicación" });
+    res.status(500).json({ message: error.message });
+    return;
   }
 };
 
@@ -86,17 +96,20 @@ export const updatePost = async (req, res) => {
     const { postId } = req.params;
     const publicacion = req.body;
     const publicacionEncontrada = await PostModel.findById(postId);
+    console.log(publicacionEncontrada);
     // Verifica si el publicacion existe
     if (!publicacionEncontrada) return res.status(404).json({ message: "Comentario no encontrado." });
     // Verifica si el usuario actual es el autor de la publicacion
     if (!publicacionEncontrada.author.equals(req.userId)) {
-      return res.status(403).json({ message: "No tienes permisos para editar este comentario." });
+      return res.status(401).json({ message: "No tienes permisos para editar este comentario." });
     }
     const publicacionActualizada = await PostModel.findByIdAndUpdate(postId, publicacion, { new: true });
     res.status(202).json(publicacionActualizada);
+    return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "No se pudo editar la publicación" });
+    res.status(500).json({ message: error.message });
+    return;
   }
 };
 
@@ -112,9 +125,11 @@ export const deletePost = async (req, res) => {
       return res.status(403).json({ message: "No tienes permisos para editar este comentario." });
     }
     await PostModel.findByIdAndDelete(postId);
-    res.status(200).json({ message: "Publicación eliminada" });
+    res.status(204).send();
+    return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "No se pudo eliminar la publicación" });
+    res.status(500).json({ message: error.message });
+    return;
   }
 };

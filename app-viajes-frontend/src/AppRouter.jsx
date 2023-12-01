@@ -1,6 +1,10 @@
+//RUTAS / CONTEXT / PROVIDER
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { PrivateRoutes } from "./routes/PrivateRoutes";
+import { PublicRoutes } from "./routes/PublicRoutes";
+import { PostProvider } from "./context/PostContext";
+
 //IMPORT PAGINAS
 import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
@@ -9,10 +13,11 @@ import NoFound404Page from "./pages/NoFound404Page";
 import HomePrivate from "./pages/HomePrivate";
 import PostPrivate from "./pages/PostPrivate";
 import OnePostView from "./pages/OnePostView";
-import { PublicRoutes } from "./routes/PublicRoutes";
-import { Pruebas } from "./pages/Pruebas";
 import PostCreate from "./pages/PostCreate";
-import { PostProvider } from "./context/PostContext";
+import EditPostPage from "./pages/EditPostPage";
+import EditarPublucacionesPage from "./pages/EditarPublucacionesPage";
+import { Pruebas } from "./pages/Pruebas";
+import VerPostPage from "./pages/VerPostPage";
 
 function AppRouter() {
   return (
@@ -32,7 +37,10 @@ function AppRouter() {
               <Route path="/home" element={<HomePrivate />} />
               <Route path="/post" element={<PostPrivate />} />
               <Route path="/post/new" element={<PostCreate />} />
-              <Route path="/post/:id" element={<OnePostView />} />
+              {/* <Route path="/post/edit/:id" element={<EditPostPage />} /> */}
+              <Route path="/post/edit/:id" element={<EditarPublucacionesPage />} />
+              {/* <Route path="/post/:id" element={<OnePostView />} /> */}
+              <Route path="/post/:id" element={<VerPostPage />} />
             </Route>
 
             <Route path="*" element={<NoFound404Page />} />
