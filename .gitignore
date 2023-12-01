@@ -27,6 +27,9 @@ dist-ssr
 # FRONTEND
 app-viajes-frontend/node_modules/
 app-viajes-frontend/dist/
+app-viajes-frontend-react/node_modules/
+app-viajes-frontend-react/dist/
+app-viajes-frontend-react/package-lock.json
 # BACKEND
 app-viajes-backend/node_modules/
 app-viajes-backend/.env

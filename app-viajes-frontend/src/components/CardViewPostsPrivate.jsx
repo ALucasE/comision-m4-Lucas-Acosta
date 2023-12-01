@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getPostByAuthor } from "../api/peticionsPost";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { SinPost } from "./SinPost";
 
 export const CardViewPostsPrivate = () => {
   const [posts, setPosts] = useState([]);
@@ -12,6 +13,9 @@ export const CardViewPostsPrivate = () => {
   const obtenerPostByAuthor = async () => {
     try {
       const res = await getPostByAuthor(jwt);
+      if (res.status !== 200) {
+        return <SinPost />;
+      }
       setPosts(res.data);
     } catch (error) {
       console.error("Error: ", error);

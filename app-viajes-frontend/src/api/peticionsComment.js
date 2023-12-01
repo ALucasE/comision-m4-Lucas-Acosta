@@ -41,7 +41,7 @@ export const createComment = (token, data) =>
     },
   });
 
-export const updatePost = (token, data, commentId) =>
+export const updateComment = (token, data, commentId) =>
   axios.put(`${URL_COMMENT}${commentId}`, data, {
     headers: {
       Authorization: token,
@@ -49,7 +49,7 @@ export const updatePost = (token, data, commentId) =>
     },
   });
 
-export const deletePost = (token, commentId) =>
+export const deleteComment = (token, commentId) =>
   axios.delete(`${URL_COMMENT}${commentId}`, {
     headers: {
       Authorization: token,

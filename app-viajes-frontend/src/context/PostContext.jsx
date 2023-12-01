@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { createComment, getCommentsByPostId } from "../api/peticionsComment";
+import { createComment, deleteComment, getCommentsByPostId } from "../api/peticionsComment";
 // import { useAuth } from "./AuthContext";
 
 export const PostContext = createContext();
@@ -27,7 +27,7 @@ export const PostProvider = ({ children }) => {
   const obtenerComentariosPorIdPost = async (id) => {
     try {
       const res = await getCommentsByPostId(autorizacion, id);
-      if (res.status === 404) {
+      if (res.status === 204) {
         setCurrentsComments(null);
       } else {
         setCurrentsComments(res.data);
@@ -44,6 +44,14 @@ export const PostProvider = ({ children }) => {
       console.log(error);
     }
   };
+  //Eliminar COMENTARIO ####################################################################################
+  const eliminarUnComentario = async (id) => {
+    try {
+      await deleteComment(autorizacion, id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const setCommentContext = (comments) => {
     setCurrentsComments(comments);
@@ -51,7 +59,15 @@ export const PostProvider = ({ children }) => {
 
   return (
     <PostContext.Provider
-      value={{ currentComments, currentPost, setPostContext, setCommentContext, obtenerComentariosPorIdPost, agregarUnComentario }}
+      value={{
+        currentComments,
+        currentPost,
+        setPostContext,
+        setCommentContext,
+        obtenerComentariosPorIdPost,
+        agregarUnComentario,
+        eliminarUnComentario,
+      }}
     >
       {children}
     </PostContext.Provider>
