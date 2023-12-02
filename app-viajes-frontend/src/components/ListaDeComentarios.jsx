@@ -6,8 +6,6 @@ import { BsPencil, BsTrash3 } from "react-icons/bs";
 
 export const ListaDeComentarios = ({ comentarios }) => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
-  console.log(comentarios);
   const eliminarComentario = () => {};
 
   return (

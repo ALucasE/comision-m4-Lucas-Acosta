@@ -66,9 +66,9 @@ export const NavBarPrivate = () => {
                   <Link className="dropdown-item" to="/post">
                     Ver mis publicación
                   </Link>
-                  <Link className="dropdown-item" to="/">
+                  {/* <Link className="dropdown-item" to="/">
                     Something else here
-                  </Link>
+                  </Link> */}
                   <div className="dropdown-divider" />
                   <Link className="dropdown-item" to="/profile">
                     Perfil

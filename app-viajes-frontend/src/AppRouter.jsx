@@ -12,8 +12,9 @@ import LoginPage from "./pages/LoginPage";
 import NoFound404Page from "./pages/NoFound404Page";
 import HomePrivate from "./pages/HomePrivate";
 import PostPrivate from "./pages/PostPrivate";
-import OnePostView from "./pages/OnePostView";
 import PostCreate from "./pages/PostCreate";
+import ProfilePage from "./pages/ProfilePage";
+import OnePostView from "./pages/OnePostView";
 import EditPostPage from "./pages/EditPostPage";
 import EditarPublucacionesPage from "./pages/EditarPublucacionesPage";
 import { Pruebas } from "./pages/Pruebas";
@@ -37,10 +38,11 @@ function AppRouter() {
               <Route path="/home" element={<HomePrivate />} />
               <Route path="/post" element={<PostPrivate />} />
               <Route path="/post/new" element={<PostCreate />} />
-              {/* <Route path="/post/edit/:id" element={<EditPostPage />} /> */}
               <Route path="/post/edit/:id" element={<EditarPublucacionesPage />} />
-              {/* <Route path="/post/:id" element={<OnePostView />} /> */}
               <Route path="/post/:id" element={<VerPostPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              {/* <Route path="/post/edit/:id" element={<EditPostPage />} /> */}
+              {/* <Route path="/post/:id" element={<OnePostView />} /> */}
             </Route>
 
             <Route path="*" element={<NoFound404Page />} />
