@@ -68,7 +68,7 @@ function FormRegister() {
           <label className="form-label mt-4" htmlFor="avatar">
             URL del para el avatar
           </label>
-          <input type="url" className="form-control" placeholder="juanperez" id="avatar" name="avatar" />
+          <input type="url" className="form-control" placeholder="https://avatar.com/avatar.jpg" id="avatar" name="avatar" />
         </div>
 
         <div className="form-group">

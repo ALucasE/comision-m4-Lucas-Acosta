@@ -33,7 +33,6 @@ export const getCommentsByPostId = async (req, res) => {
   try {
     const { postId } = req.params;
     const comentarios = await CommentModel.find({ post: postId }).populate("author", ["username", "avatar"]);
-    console.log("comentarios", comentarios);
     // if (comentarios.length === 0) return res.status(204).json({ message: "No hay comentarios para esta publicación." });
     if (comentarios.length === 0) return res.status(204).send();
 
