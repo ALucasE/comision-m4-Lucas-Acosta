@@ -1,13 +1,15 @@
+import { useState } from "react";
+import { API_URL } from "../api/constantes";
+//API_URL = "http://localhost:3000/api/";
+import { helpPeticionesHttp } from "../helper/helpPeticionesHttp";
 import { CardBody } from "./Card";
 
 // import { useParams } from "react-router-dom";
 
 import { BsPencil, BsTrash3 } from "react-icons/bs";
 
-export const ListaDeComentarios = ({ comentarios }) => {
+export const ListaDeComentarios = ({ comentarios, eliminarComentario }) => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const eliminarComentario = () => {};
-
   return (
     <>
       <CardBody>

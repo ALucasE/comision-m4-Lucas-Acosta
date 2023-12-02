@@ -11,7 +11,7 @@ export const NavBarPrivate = () => {
   // };
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-primary sticky-top" data-bs-theme="dark">
+      <nav className="navbar navbar-expand-sm bg-primary sticky-top" data-bs-theme="dark">
         <div className="container-fluid">
           <UserCard />
           {/* <Link className="navbar-brand" to="/">

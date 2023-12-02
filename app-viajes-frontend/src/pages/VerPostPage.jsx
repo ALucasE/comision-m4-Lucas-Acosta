@@ -20,6 +20,26 @@ const VerPostPage = () => {
   const [errorComentarios, setErrorComentarios] = useState(null);
   const [sinContenido, setSinContenido] = useState(false);
 
+  //ELIMANIAR UN COMENTARIO
+  const eliminarComentario = (id) => {
+    let options = {
+      headers: { "content-type": "application/json" },
+    };
+
+    helpPeticionesHttp()
+      .del(`${API_URL}comments/${id}`, options)
+      .then((res) => {
+        console.log(res);
+        if (!res.err) {
+          // let newData = comentarios.filter((comment) => comment.id !== id);
+          // setComentarios(newData);
+          getComments();
+        } else {
+          setError(res);
+        }
+      });
+  };
+
   //EFECTO PARA CARGAR POST
   useEffect(() => {
     setLoading(true);
@@ -43,7 +63,7 @@ const VerPostPage = () => {
   }, []);
 
   //EFECTO PARA CARGAR COMENTARIOS
-  useEffect(() => {
+  const getComments = () => {
     setLoadingComentarios(true);
     helpPeticionesHttp()
       .getResJson(`${API_URL}comments/${id}`)
@@ -63,6 +83,10 @@ const VerPostPage = () => {
         }
         setLoadingComentarios(false);
       });
+  };
+  //EFECTO PARA CARGAR COMENTARIOS
+  useEffect(() => {
+    getComments();
   }, []);
 
   return (
@@ -73,7 +97,7 @@ const VerPostPage = () => {
       {loadingComentario && <Loader />}
       {errorComentarios && <Mensaje mensaje={errorComentarios.status} bqColor="rojo" />}
       {sinContenido && <SinComments />}
-      {comentarios && <ListaDeComentarios comentarios={comentarios} />}
+      {comentarios && <ListaDeComentarios comentarios={comentarios} eliminarComentario={eliminarComentario} />}
       <AgregarComentario postId={id} setComentarios={setComentarios} comentarios={comentarios} />
     </>
   );

@@ -6,13 +6,19 @@ import { validationResult } from "express-validator";
 export const getAllPost = async (req, res) => {
   try {
     const publicaciones = await PostModel.find().populate("author", ["username", "avatar"]);
-    if (publicaciones.length < 1) return res.sendStatus(204);
-    res.status(200).json(publicaciones);
-    return;
+    // if (publicaciones.length < 1) return res.sendStatus(204);
+    // res.status(200).json(publicaciones);
+    // return;
+    if (publicaciones.length === 0) {
+      res.status(204).json({ mensaje: "No hay datos en las publicaciones" });
+    } else {
+      res.status(200).json(publicaciones);
+    }
   } catch (error) {
     console.log(error);
     // res.status(500).json({ message: "Error al cargar las publicaciones" });
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ error });
     return;
   }
 };
@@ -29,7 +35,7 @@ export const getPostById = async (req, res) => {
     console.log(error);
     // res.status(500).json({ message: "Error al cargar la publicación por ID" });
     // res.status(500).json({ message: error.message });
-    res.status(500);
+    res.status(500).json({ error });
     return;
   }
 };
@@ -39,13 +45,18 @@ export const getPostByAuthor = async (req, res) => {
   try {
     //const autor = req.userId;
     const publicaciones = await PostModel.find({ author: req.userId }).populate("author", ["username", "avatar", "email"]);
-    if (publicaciones.length < 1) return res.sendStatus(204);
-
-    res.status(200).json(publicaciones);
+    // if (publicaciones.length < 1) return res.sendStatus(204);
+    // res.status(200).json(publicaciones);
+    if (publicacion.length === 0) {
+      res.status(204).json({ mensaje: "No hay datos en las publicaciones" });
+    } else {
+      res.status(200).json(publicacion);
+    }
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ error });
     return;
   }
 };
@@ -71,7 +82,6 @@ export const createPost = async (req, res) => {
     const nuevaPublicacion = await newPost.save();
 
     return res.status(201).json({
-      msg: "Publicación creada exitosamente.",
       author: author.username,
       authorId: author._id,
       title: nuevaPublicacion.title,
@@ -80,7 +90,8 @@ export const createPost = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ error });
     return;
   }
 };
@@ -108,7 +119,8 @@ export const updatePost = async (req, res) => {
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ error });
     return;
   }
 };
@@ -122,14 +134,15 @@ export const deletePost = async (req, res) => {
     if (!publicacionEncontrada) return res.status(404).json({ message: "Publicación no encontrado." });
     // Verifica si el usuario actual es el autor de la publicacion
     if (!publicacionEncontrada.author.equals(req.userId)) {
-      return res.status(403).json({ message: "No tienes permisos para editar este comentario." });
+      return res.status(403).json({ message: "No tienes permisos para eliminar este comentario." });
     }
     await PostModel.findByIdAndDelete(postId);
     res.status(204).send();
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ error });
     return;
   }
 };
