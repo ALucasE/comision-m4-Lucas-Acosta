@@ -23,7 +23,8 @@ export const createComment = async (req, res) => {
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ error });
     return;
   }
 };
@@ -34,14 +35,18 @@ export const getCommentsByPostId = async (req, res) => {
     const { postId } = req.params;
     const comentarios = await CommentModel.find({ post: postId }).populate("author", ["username", "avatar"]);
     // if (comentarios.length === 0) return res.status(204).json({ message: "No hay comentarios para esta publicación." });
-    if (comentarios.length === 0) return res.status(204).send();
-
-    res.status(200).json(comentarios);
-    return;
+    // if (comentarios.length === 0) return res.status(204).send();
+    // res.status(200) . json(comentarios);
+    // return
+    if (comentarios.length === 0) {
+      res.status(204).json({ mensaje: "No hay comentarios en esta publicación" });
+    } else {
+      res.status(200).json(comentarios);
+    }
   } catch (error) {
     console.log(error);
-    // res.status(500).json({ message: error.message });
-    res.status(500);
+    res.status(500).json({ error });
+    // res.status(500);
     return;
   }
 };
@@ -65,7 +70,8 @@ export const updateComment = async (req, res) => {
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ error });
     return;
   }
 };
@@ -79,14 +85,15 @@ export const deleteComment = async (req, res) => {
     if (!comentarioEncontrado) return res.status(404).json({ message: "Comentario no encontrado." });
     // Verifica si el usuario actual es el autor del comentario
     if (!comentarioEncontrado.author.equals(req.userId)) {
-      return res.status(403).json({ message: "No tienes permisos para editar este comentario." });
+      return res.status(403).json({ message: "No tienes permisos para eliminar este comentario." });
     }
     await CommentModel.findByIdAndDelete(commentId);
     res.status(200).json({ message: "Comentario eliminado exitosamente." });
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    res.status(500).json({ error });
     return;
   }
 };
