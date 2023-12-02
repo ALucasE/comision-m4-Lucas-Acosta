@@ -6,7 +6,7 @@ export const CardPublicaciones = ({ publicacion }) => {
   const { id } = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="card-body">
-      <div className="card mb-3">
+      <div className="card mb-0">
         <div className="row g-0">
           <div className="col-md-4">
             <img src={publicacion.imageURL} className="img-fluid rounded-start" alt="Imagen del post" />

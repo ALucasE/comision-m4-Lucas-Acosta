@@ -7,6 +7,7 @@ import { API_URL } from "../api/constantes";
 import { CardPublicaciones } from "../components/CardPublicaciones";
 import { SinComments } from "../components/SinComments";
 import { ListaDeComentarios } from "../components/ListaDeComentarios";
+import { AgregarComentario } from "../components/AgregarComentario";
 //API_URL = "http://localhost:3000/api/";
 
 const VerPostPage = () => {
@@ -50,8 +51,6 @@ const VerPostPage = () => {
         if (!res.err) {
           setComentarios(res);
           setErrorComentarios(null);
-          console.log("if", res); //CONSOLE LOG
-          console.log(comentarios); //CONSOLE LOG
         } else {
           if (res.status === 204) {
             setLoadingComentarios(false);
@@ -75,6 +74,7 @@ const VerPostPage = () => {
       {errorComentarios && <Mensaje mensaje={errorComentarios.status} bqColor="rojo" />}
       {sinContenido && <SinComments />}
       {comentarios && <ListaDeComentarios comentarios={comentarios} />}
+      <AgregarComentario postId={id} setComentarios={setComentarios} comentarios={comentarios} />
     </>
   );
 };
