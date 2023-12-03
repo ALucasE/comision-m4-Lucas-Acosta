@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { CardAuthor } from "./CardAuthor";
 import { BsPencil, BsTrash3 } from "react-icons/bs";
+import Swal from "sweetalert2";
 
-export const CardPublicaciones = ({ publicacion }) => {
+export const CardPublicaciones = ({ publicacion, eliminarPublicacion }) => {
   const { id } = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="card-body">
@@ -24,7 +25,30 @@ export const CardPublicaciones = ({ publicacion }) => {
               <Link to={`/post/edit/${publicacion._id}`} type="button" className="btn btn-primary btn-sm">
                 <BsPencil />
               </Link>
-              <button type="button" className="btn btn-primary btn-sm">
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={() => {
+                  Swal.fire({
+                    title: "Estas seguro/a?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "¡Sí, bórralo!",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      eliminarPublicacion(publicacion._id);
+                      Swal.fire({
+                        title: "¡Eliminado!",
+                        text: "Elemento eliminado.",
+                        icon: "success",
+                      });
+                    }
+                  });
+                }}
+              >
                 <BsTrash3 />
               </button>
             </div>

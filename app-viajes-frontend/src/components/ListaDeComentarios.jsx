@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { API_URL } from "../api/constantes";
 //API_URL = "http://localhost:3000/api/";
-import { helpPeticionesHttp } from "../helper/helpPeticionesHttp";
+
 import { CardBody } from "./Card";
+import Swal from "sweetalert2";
 
 // import { useParams } from "react-router-dom";
 
@@ -27,7 +27,30 @@ export const ListaDeComentarios = ({ comentarios, eliminarComentario }) => {
                     <button type="button" className="btn btn-primary btn-sm">
                       <BsPencil />
                     </button>
-                    <button type="button" className="btn btn-primary btn-sm" onClick={() => eliminarComentario(item._id)}>
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                      onClick={() => {
+                        Swal.fire({
+                          title: "Estas seguro/a?",
+                          text: "¡No podrás revertir esto!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "¡Sí, bórralo!",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            eliminarComentario(item._id);
+                            Swal.fire({
+                              title: "¡Eliminado!",
+                              text: "Elemento eliminado.",
+                              icon: "success",
+                            });
+                          }
+                        });
+                      }}
+                    >
                       <BsTrash3 />
                     </button>
                   </div>
@@ -42,3 +65,4 @@ export const ListaDeComentarios = ({ comentarios, eliminarComentario }) => {
 };
 
 // hidden={item.author._id === id ? true : false}
+//onClick={() => eliminarComentario(item._id)}

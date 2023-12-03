@@ -78,7 +78,7 @@ export const signIn = async (req, res) => {
   }
 };
 
-/*                     LOGIN DE UN USUARIO CREADO              */
+/*                     LOGOUT DE UN USUARIO CREADO              */
 export const logout = async (req, res) => {
   //Se borran los datos de los cookies
   res.cookie("token", "", { expires: new Date(0) });
