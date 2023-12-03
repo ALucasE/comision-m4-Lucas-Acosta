@@ -47,10 +47,10 @@ export const getPostByAuthor = async (req, res) => {
     const publicaciones = await PostModel.find({ author: req.userId }).populate("author", ["username", "avatar", "email"]);
     // if (publicaciones.length < 1) return res.sendStatus(204);
     // res.status(200).json(publicaciones);
-    if (publicacion.length === 0) {
+    if (publicaciones.length === 0) {
       res.status(204).json({ mensaje: "No hay datos en las publicaciones" });
     } else {
-      res.status(200).json(publicacion);
+      res.status(200).json(publicaciones);
     }
     return;
   } catch (error) {

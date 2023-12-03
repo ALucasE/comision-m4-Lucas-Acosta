@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Loader } from "../components/Loader";
 import { Mensaje } from "../components/Mensaje";
 import { helpPeticionesHttp } from "../helper/helpPeticionesHttp";
@@ -19,6 +19,27 @@ const VerPostPage = () => {
   const [loadingComentario, setLoadingComentarios] = useState(false);
   const [errorComentarios, setErrorComentarios] = useState(null);
   const [sinContenido, setSinContenido] = useState(false);
+  const go = useNavigate();
+
+  //ELIMNAR UNA PUBLICACION
+  const eliminarPublicacion = (id) => {
+    let options = {
+      headers: { "content-type": "application/json" },
+    };
+
+    helpPeticionesHttp()
+      .del(`${API_URL}post/${id}`, options)
+      .then((res) => {
+        console.log(res);
+        if (!res.err) {
+          // let newData = comentarios.filter((comment) => comment.id !== id);
+          // setComentarios(newData);
+          go("/post");
+        } else {
+          setError(res);
+        }
+      });
+  };
 
   //ELIMANIAR UN COMENTARIO
   const eliminarComentario = (id) => {
@@ -93,7 +114,7 @@ const VerPostPage = () => {
     <>
       {loading && <Loader />}
       {error && <Mensaje mensaje={error.status} bqColor="rojo" />}
-      {publicacion && <CardPublicaciones publicacion={publicacion} />}
+      {publicacion && <CardPublicaciones publicacion={publicacion} eliminarPublicacion={eliminarPublicacion} />}
       {loadingComentario && <Loader />}
       {errorComentarios && <Mensaje mensaje={errorComentarios.status} bqColor="rojo" />}
       {sinContenido && <SinComments />}

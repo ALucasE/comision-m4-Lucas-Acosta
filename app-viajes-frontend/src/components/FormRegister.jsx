@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { reqRegister } from "../api/auth";
 import { useState, useRef } from "react";
+import Swal from "sweetalert2";
 
 const validateForm = (user) => {
   let errors = {};
@@ -77,10 +78,18 @@ function FormRegister() {
           setSaveSuccessMessage("Registro correcto!");
           console.log("Usuario creado: ", res.data);
         } else {
-          alert("Error al registrarse");
+          Swal.fire({
+            icon: "error",
+            title: "Ocurrió un error",
+            text: "El servidor rechazo la solicitud",
+          });
         }
       } catch (error) {
-        alert("Error al registrarse");
+        Swal.fire({
+          icon: "error",
+          title: "Ocurrió un error",
+          text: "El servidor rechazo la solicitud",
+        });
         console.log("Error: ", error);
         setHiddenSubmit(false);
       }
