@@ -1,5 +1,6 @@
 // import { Card } from "../components/Card";
 import { NavBarPrivate } from "../components/NavBarPrivate";
+import { Footer } from "../components/Footer";
 export const PrivateLayout = ({ children }) => {
   return (
     <>
@@ -9,6 +10,7 @@ export const PrivateLayout = ({ children }) => {
           <div className="card text-white bg-secondary mb-3">{children}</div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

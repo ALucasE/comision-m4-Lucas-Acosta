@@ -1,4 +1,5 @@
 // import { Card } from "../components/Card";
+import { Footer } from "../components/Footer";
 import { NavBarPublic } from "../components/NavBarPublic";
 
 export const DefaultLayout = ({ children }) => {
@@ -9,6 +10,7 @@ export const DefaultLayout = ({ children }) => {
       <div className="container-sm mt-5">
         <div className="card text-white bg-secondary mb-3">{children}</div>
       </div>
+      <Footer />
     </>
   );
 };

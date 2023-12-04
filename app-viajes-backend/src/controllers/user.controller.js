@@ -135,3 +135,29 @@ export const getUserById = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor." });
   }
 };
+
+/*                     VERIFICAR EMAIL                        */
+
+export const checkEmail = async (req, res) => {
+  const email = req.params.email;
+  const existingUser = await UserModel.findOne({ email });
+
+  if (existingUser) {
+    res.json({ available: false });
+  } else {
+    res.json({ available: true });
+  }
+};
+
+/*                     VERIFICAR USERNAME                        */
+
+export const checkUsername = async (req, res) => {
+  const username = req.params.username;
+  const existingUser = await UserModel.findOne({ username });
+
+  if (existingUser) {
+    res.json({ available: false });
+  } else {
+    res.json({ available: true });
+  }
+};
