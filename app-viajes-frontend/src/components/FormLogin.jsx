@@ -64,7 +64,7 @@ const FormLogin = () => {
       } catch (error) {
         Swal.fire({
           icon: "error",
-          title: "Ocurrió un error",
+          title: "❌ Ocurrió un error",
           text: "Revisa tu usuario y/o contraseña",
         });
         console.log("Error: ", error);
