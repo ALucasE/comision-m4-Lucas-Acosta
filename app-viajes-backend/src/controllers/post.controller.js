@@ -48,7 +48,8 @@ export const getPostByAuthor = async (req, res) => {
     // if (publicaciones.length < 1) return res.sendStatus(204);
     // res.status(200).json(publicaciones);
     if (publicaciones.length === 0) {
-      res.status(204).json({ mensaje: "No hay datos en las publicaciones" });
+      // res.status(204).json({ mensaje: "No hay datos en las publicaciones" });
+      res.status(204);
     } else {
       res.status(200).json(publicaciones);
     }
