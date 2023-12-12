@@ -64,7 +64,7 @@ export const FormEditPost = ({ publicacion }) => {
         .put(`${API_URL}post/${id}`, options)
         .then((res) => {
           if (!res.err) {
-            go("/post");
+            go(`/post/${id}`);
           } else {
             Swal.fire({
               icon: "error",

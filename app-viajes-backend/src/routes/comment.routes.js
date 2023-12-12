@@ -5,6 +5,7 @@ import { descriptionValidation } from "../validations/commentValidations.js";
 const commentRouter = Router();
 
 commentRouter.post("/", [validateAccessToken, descriptionValidation], createComment);
+// commentRouter.get("/", [validateAccessToken], getCommentById);
 commentRouter.get("/:postId", [validateAccessToken], getCommentsByPostId);
 commentRouter.put("/:commentId", [validateAccessToken, descriptionValidation], updateComment);
 commentRouter.delete("/:commentId", [validateAccessToken, descriptionValidation], deleteComment);

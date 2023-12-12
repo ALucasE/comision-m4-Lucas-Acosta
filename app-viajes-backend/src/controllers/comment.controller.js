@@ -18,8 +18,11 @@ export const createComment = async (req, res) => {
     publicacion.comments.push(comentario._id);
     await publicacion.save();
 
-    const comentarioConAutor = await comentario.populate("author", ["username", "avatar"]);
-    res.status(201).json(comentarioConAutor);
+    // const comentarioConAutor = await comentario.populate("author", ["username", "avatar"]);
+    //TRAE TODOS LOS COMENTARIOS DEL POST
+    const comentarios = await CommentModel.find({ post: postId }).populate("author", ["username", "avatar"]);
+
+    res.status(201).json(comentarios);
     return;
   } catch (error) {
     console.log(error);
@@ -56,6 +59,8 @@ export const updateComment = async (req, res) => {
   try {
     const { commentId } = req.params;
     const { description } = req.body;
+    console.log("req.body: ", req.body);
+    console.log("req.params: ", req.params);
     const comentarioEncontrado = await CommentModel.findById(commentId);
     // Verifica si el comentario existe
     if (!comentarioEncontrado) return res.status(404).json({ message: "Comentario no encontrado." });
@@ -76,12 +81,35 @@ export const updateComment = async (req, res) => {
   }
 };
 
+// /*VER TODOS LOS COMENTARIOS DE UNA PUBLICACIÓN ##############################################################*/
+// export const getCommentById = async (req, res) => {
+//   try {
+//     const { commentId } = req.body;
+//     const comentario = await CommentModel.findById(commentId);
+//     // if (comentarios.length === 0) return res.status(204).json({ message: "No hay comentarios para esta publicación." });
+//     // if (comentarios.length === 0) return res.status(204).send();
+//     // res.status(200) . json(comentarios);
+//     // return
+//     if (comentario.length === 0) {
+//       res.status(204).json({ mensaje: "No hay comentarios en esta publicación" });
+//     } else {
+//       res.status(200).json(comentario);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error });
+//     // res.status(500);
+//     return;
+//   }
+// };
+
 /*ELIMINAR COMENTARIO ####################################################################################*/
 export const deleteComment = async (req, res) => {
   try {
     const { commentId } = req.params;
     const comentarioEncontrado = await CommentModel.findById(commentId);
     // Verifica si el comentario existe
+
     if (!comentarioEncontrado) return res.status(404).json({ message: "Comentario no encontrado." });
     // Verifica si el usuario actual es el autor del comentario
     if (!comentarioEncontrado.author.equals(req.userId)) {

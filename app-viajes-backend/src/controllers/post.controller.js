@@ -108,7 +108,6 @@ export const updatePost = async (req, res) => {
     const { postId } = req.params;
     const publicacion = req.body;
     const publicacionEncontrada = await PostModel.findById(postId);
-    console.log(publicacionEncontrada);
     // Verifica si el publicacion existe
     if (!publicacionEncontrada) return res.status(404).json({ message: "Comentario no encontrado." });
     // Verifica si el usuario actual es el autor de la publicacion

@@ -5,7 +5,6 @@ import { Mensaje } from "../components/Mensaje";
 import { helpPeticionesHttp } from "../helper/helpPeticionesHttp";
 import { API_URL } from "../api/constantes";
 import { CardPublicaciones } from "../components/CardPublicaciones";
-import { SinComments } from "../components/SinComments";
 import { ListaDeComentarios } from "../components/ListaDeComentarios";
 import { AgregarComentario } from "../components/AgregarComentario";
 //API_URL = "http://localhost:3000/api/";
@@ -18,7 +17,6 @@ const VerPostPage = () => {
   const [comentarios, setComentarios] = useState(null);
   const [loadingComentario, setLoadingComentarios] = useState(false);
   const [errorComentarios, setErrorComentarios] = useState(null);
-  const [sinContenido, setSinContenido] = useState(false);
   const go = useNavigate();
 
   //ELIMNAR UNA PUBLICACION
@@ -50,11 +48,9 @@ const VerPostPage = () => {
     helpPeticionesHttp()
       .del(`${API_URL}comments/${id}`, options)
       .then((res) => {
-        console.log(res);
         if (!res.err) {
-          // let newData = comentarios.filter((comment) => comment.id !== id);
-          // setComentarios(newData);
-          getComments();
+          let newData = comentarios.filter((comment) => comment._id !== id);
+          setComentarios(newData);
         } else {
           setError(res);
         }
@@ -95,7 +91,6 @@ const VerPostPage = () => {
         } else {
           if (res.status === 204) {
             setLoadingComentarios(false);
-            setSinContenido(true);
           } else {
             console.log("else", res);
             setComentarios(null);
@@ -117,10 +112,11 @@ const VerPostPage = () => {
       {publicacion && <CardPublicaciones publicacion={publicacion} eliminarPublicacion={eliminarPublicacion} />}
       {loadingComentario && <Loader />}
       {errorComentarios && <Mensaje mensaje={errorComentarios.status} bqColor="rojo" />}
-      {sinContenido && <SinComments />}
-      {comentarios && <ListaDeComentarios comentarios={comentarios} eliminarComentario={eliminarComentario} />}
-      <AgregarComentario postId={id} setComentarios={setComentarios} comentarios={comentarios} />
+      {comentarios && <ListaDeComentarios comentarios={comentarios} eliminarComentario={eliminarComentario} refresh={getComments} />}
+      <AgregarComentario postId={id} setComentarios={setComentarios} comentarios={comentarios} refresh={getComments} />
     </>
   );
 };
 export default VerPostPage;
+
+// {sinContenido && <SinComments />}

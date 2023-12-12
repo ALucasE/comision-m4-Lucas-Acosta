@@ -1,15 +1,46 @@
 import { API_URL } from "../api/constantes";
+import { helpPeticionesHttp } from "../helper/helpPeticionesHttp";
 //API_URL = "http://localhost:3000/api/";
-
 import { CardBody } from "./Card";
 import Swal from "sweetalert2";
-
-// import { useParams } from "react-router-dom";
-
 import { BsPencil, BsTrash3 } from "react-icons/bs";
 
-export const ListaDeComentarios = ({ comentarios, eliminarComentario }) => {
+export const ListaDeComentarios = ({ comentarios, eliminarComentario, refresh }) => {
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleEditarComentario = (comentarioId) => {
+    const comentarioFiltrado = comentarios.filter((element) => element._id === comentarioId);
+
+    Swal.fire({
+      title: "Editar Comentario",
+      input: "text",
+      inputValue: comentarioFiltrado[0].description,
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
+      inputValidator: (value) => {
+        if (!value) {
+          return "Debes ingresar un nuevo comentario";
+        }
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let comentarioNuevo = result.value;
+        let options = {
+          headers: { "content-type": "application/json" },
+          body: { description: comentarioNuevo },
+        };
+        helpPeticionesHttp().put(`${API_URL}comments/${comentarioId}`, options);
+        refresh();
+        Swal.fire({
+          title: "¡Editado!",
+          text: "Comentario editado correctamente.",
+          icon: "success",
+        });
+      }
+    });
+  };
+
   return (
     <>
       <CardBody>
@@ -24,7 +55,7 @@ export const ListaDeComentarios = ({ comentarios, eliminarComentario }) => {
                 <td colSpan={4}>{item?.description}</td>
                 <td>
                   <div className="btn-group" hidden={item.author._id === user.id ? false : true}>
-                    <button type="button" className="btn btn-primary btn-sm">
+                    <button type="button" className="btn btn-primary btn-sm" onClick={() => handleEditarComentario(item._id)}>
                       <BsPencil />
                     </button>
                     <button

@@ -1,32 +1,34 @@
-import { useRef } from "react";
-import { CardBody } from "./Card";
+import { useRef, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { helpPeticionesHttp } from "../helper/helpPeticionesHttp";
 import { API_URL } from "../api/constantes";
-import { useState } from "react";
 import { Mensaje } from "./Mensaje";
-//API_URL = "http://localhost:3000/api/";
+import { CardBody } from "./Card";
 
 const validateForm = (comentario) => {
   let errors = {};
 
-  // Validación para el campo 'description'
   if (!comentario.description.trim()) {
     errors.description = "El campo 'Comentario' es requerido";
   }
 
   return errors;
 };
-let styles = {
-  fontWeight: "bold",
-  color: "orange",
-};
 
-export const AgregarComentario = ({ postId, setComentarios, comentarios, refresh }) => {
+export const AgregarEditarComentario = ({ postId, setComentarios, comentarios, refresh, comentarioEditar }) => {
   const ref = useRef(null);
   const [error, setError] = useState(null);
   const [errorsValidate, setErrorsValidate] = useState({});
-  //maneja el formulario
+
+  const isEditing = !!comentarioEditar;
+
+  // Si estamos en modo de edición, establecer el valor del campo description
+  useEffect(() => {
+    if (isEditing) {
+      ref.current.description.value = comentarioEditar.description;
+    }
+  }, [comentarioEditar, isEditing]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -35,33 +37,40 @@ export const AgregarComentario = ({ postId, setComentarios, comentarios, refresh
       postId: postId,
       description: description,
     };
-    //Validación de Errores
+
     const formErrors = validateForm(nuevoComentario);
     setErrorsValidate(formErrors);
+
     if (Object.keys(formErrors).length === 0) {
       let options = {
         body: nuevoComentario,
         headers: { "content-type": "application/json" },
       };
+
+      const requestUrl = isEditing ? `${API_URL}comments/${comentarioEditar._id}` : `${API_URL}comments/`;
+
+      const requestMethod = isEditing ? "put" : "post";
+
       helpPeticionesHttp()
-        .post(`${API_URL}comments/`, options)
+        [requestMethod](requestUrl, options)
         .then((res) => {
           if (!res.err) {
-            // setComentarios([...comentarios, res]);
             setComentarios(res);
           } else {
             setError(res);
             Swal.fire({
               icon: "error",
               title: "Ocurrió un error",
-              text: "El servidor rechazo la solicitud",
+              text: "El servidor rechazó la solicitud",
             });
           }
         });
+
       setComentarios([...comentarios]);
       ref.current.reset();
     }
   };
+
   return (
     <CardBody>
       <div className="d-grid gap-2 mt-0">
@@ -71,7 +80,7 @@ export const AgregarComentario = ({ postId, setComentarios, comentarios, refresh
             <label htmlFor="description">Comentario</label>
             {errorsValidate.description && <p style={styles}>{errorsValidate.description}</p>}
             <button className="btn btn-sm btn-primary my-2" type="submit" onClick={refresh}>
-              Enviar comentario
+              {isEditing ? "Actualizar comentario" : "Enviar comentario"}
             </button>
             {error && <Mensaje mensaje={error.status} bqColor="rojo" />}
           </div>
@@ -79,4 +88,9 @@ export const AgregarComentario = ({ postId, setComentarios, comentarios, refresh
       </div>
     </CardBody>
   );
+};
+
+const styles = {
+  fontWeight: "bold",
+  color: "orange",
 };
