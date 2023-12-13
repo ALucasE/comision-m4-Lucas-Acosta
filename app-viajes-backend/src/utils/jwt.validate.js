@@ -12,6 +12,6 @@ export const validateAccessToken = (req, res, next) => {
   jwt.verify(token, jwt_secret, (err, user) => {
     if (err) return res.status(403).json({ msg: "Acceso no autorizado. Token no válido." });
     req.userId = user.payload.id;
+    next();
   });
-  next();
 };
